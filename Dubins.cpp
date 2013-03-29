@@ -62,6 +62,60 @@ bool Dubins::sample(qreal t, QPointF &outPos, qreal &outAngle)
     return (zeroIfGood == 0);
 }
 
+const QPointF &Dubins::firstPosition() const
+{
+    return _posA;
+}
+
+const QPointF &Dubins::secondPosition() const
+{
+    return _posB;
+}
+
+void Dubins::setFirstPosition(const QPointF &firstPos)
+{
+    this->setPositions(firstPos, this->secondPosition());
+}
+
+void Dubins::setSecondPosition(const QPointF &secondPos)
+{
+    this->setPositions(this->firstPosition(), secondPos);
+}
+
+void Dubins::setPositions(const QPointF &first, const QPointF &second)
+{
+    _posA = first;
+    _posB = second;
+    _solvePath();
+}
+
+qreal Dubins::firstAngle() const
+{
+    return _angleA;
+}
+
+qreal Dubins::secondAngle() const
+{
+    return _angleB;
+}
+
+void Dubins::setFirstAngle(qreal a)
+{
+    this->setAngles(a, this->secondAngle());
+}
+
+void Dubins::setSecondAngle(qreal b)
+{
+    this->setAngles(this->firstAngle(), b);
+}
+
+void Dubins::setAngles(qreal a, qreal b)
+{
+    _angleA = a;
+    _angleB = b;
+    _solvePath();
+}
+
 //private
 void Dubins::_solvePath()
 {
